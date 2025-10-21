@@ -1,73 +1,131 @@
-package service;
+package dao;
 
-import dao.OwnerDAO;
+import core.DBConnector;
 import entity.Owner;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class OwnerService {
+public class OwnerDAO {
 
-    private final OwnerDAO ownerDAO;
-
-    public OwnerService() {
-        this.ownerDAO = new OwnerDAO();
+    // Yardımcı metot: ResultSet'ten Owner nesnesini oluşturur.
+    private Owner createOwnerFromResultSet(ResultSet rs) throws SQLException {
+        Owner owner = new Owner();
+        owner.setId(rs.getInt("id"));
+        owner.setName(rs.getString("name"));
+        owner.setPhone(rs.getString("phone"));
+        owner.setMail(rs.getString("mail"));
+        owner.setAddress(rs.getString("address"));
+        owner.setCity(rs.getString("city"));
+        return owner;
     }
 
-    // Değerlendirme formu 12: Kayıt eklemeden önce iş kuralı kontrolü yapılır.
-    public boolean saveOwner(Owner owner) {
-        if (owner.getName() == null || owner.getName().trim().isEmpty()) {
-            System.err.println("Validation Error: Owner name cannot be empty.");
-            return false;
-        }
-        if (owner.getMail() != null && !owner.getMail().contains("@")) {
-            System.err.println("Validation Error: Invalid email format.");
-            return false;
-        }
+    // Değerlendirme formu 7: Yeni kayıt ekleme (Save)
+    public boolean save(Owner owner) {
+        String sql = "INSERT INTO Owner (name, phone, mail, address, city) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        return ownerDAO.save(owner);
+            pstmt.setString(1, owner.getName());
+            pstmt.setString(2, owner.getPhone());
+            pstmt.setString(3, owner.getMail());
+            pstmt.setString(4, owner.getAddress());
+            pstmt.setString(5, owner.getCity());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public Owner getOwner(int id) {
-        return ownerDAO.findById(id);
+    // Değerlendirme formu 8: ID'ye göre kayıt bulma (FindByID)
+    public Owner findById(int id) {
+        Owner owner = null;
+        String sql = "SELECT * FROM Owner WHERE id = ?";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                owner = createOwnerFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return owner;
     }
 
-    public List<Owner> getAllOwners() {
-        return ownerDAO.findAll();
+    // Değerlendirme formu 9: Tüm kayıtları listeleme (FindAll)
+    public List<Owner> findAll() {
+        List<Owner> ownerList = new ArrayList<>();
+        String sql = "SELECT * FROM Owner ORDER BY id";
+        try (Connection conn = DBConnector.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                ownerList.add(createOwnerFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ownerList;
     }
 
-    // 🚨 TAMAMLANMIŞ FİLTRE: Hayvan sahipleri isme göre filtreleniyor mu?
-    public List<Owner> getOwnersByName(String name) {
-        return ownerDAO.findByName(name);
+    // Değerlendirme formu 10: Kayıt güncelleme (Update)
+    public boolean update(Owner owner) {
+        String sql = "UPDATE Owner SET name = ?, phone = ?, mail = ?, address = ?, city = ? WHERE id = ?";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, owner.getName());
+            pstmt.setString(2, owner.getPhone());
+            pstmt.setString(3, owner.getMail());
+            pstmt.setString(4, owner.getAddress());
+            pstmt.setString(5, owner.getCity());
+            pstmt.setInt(6, owner.getId());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    // 🚨 HATA DÜZELTİLDİ: Parametre alıyor
-    public boolean updateOwner() {
-        // ID var mı ve veritabanında mevcut mu kontrolü
-        if (owner.getId() <= 0 || ownerDAO.findById(owner.getId()) == null) {
-            System.err.println("Update Error: Owner with ID " + owner.getId() + " not found.");
-            return false;
-        }
-        // İsim boş olamaz kontrolü
-        if (owner.getName() == null || owner.getName().trim().isEmpty()) {
-            System.err.println("Validation Error: Owner name cannot be empty for update.");
-            return false;
-        }
+    // Değerlendirme formu 11: Kayıt silme (Delete)
+    public boolean delete(int id) {
+        String sql = "DELETE FROM Owner WHERE id = ?";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        return ownerDAO.update(owner);
+            pstmt.setInt(1, id);
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    // 🚨 HATA DÜZELTİLDİ: Parametre alıyor
-    public boolean deleteOwner() {
-        if (id <= 0) {
-            System.err.println("Delete Error: Invalid ID provided.");
-            return false;
-        }
+    public List<Owner> findByName(String name) {
+        List<Owner> ownerList = new ArrayList<>();
+        String sql = "SELECT * FROM Owner WHERE name ILIKE ? ORDER BY id";
 
-        // Kayıt var mı kontrolü
-        if (ownerDAO.findById(id) == null) {
-            System.err.println("Delete Error: Owner with ID " + id + " not found.");
-            return false;
-        }
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        return ownerDAO.delete(id);
+            pstmt.setString(1, "%" + name + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                ownerList.add(createOwnerFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ownerList;
     }
 }
