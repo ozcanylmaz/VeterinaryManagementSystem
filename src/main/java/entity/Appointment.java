@@ -1,14 +1,29 @@
 package entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 // Değerlendirme formu 1: Randevu varlığını temsil eder.
+@Entity
+@Table(name = "appointments")
 public class Appointment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "appointment_id")
     private int id;
+
     private LocalDateTime appointmentDate; // Randevu tarihi ve saati
 
     // Değerlendirme formu 13: İlişkiler
+
+    @ManyToOne
+    @JoinColumn(name = "animal_id")
     private Animal animal; // Hangi hayvan
+
+    @ManyToOne
+    @JoinColumn(name = "vet_id")
     private Vet vet;       // Hangi veteriner
 
     // Constructors

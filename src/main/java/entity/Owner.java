@@ -1,13 +1,25 @@
 package entity;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
 // Değerlendirme formu 1: Tüm sınıflar, metotlar ve değişkenler İngilizce isimlendirilmiştir.
+@Entity
+@Table(name = "owners")
 public class Owner {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "owner_id")
     private int id;
     private String name;
     private String phone;
     private String mail;
     private String address;
     private String city;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Animal> animals;
 
     // Constructors
     public Owner() {}

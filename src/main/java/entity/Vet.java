@@ -1,12 +1,24 @@
 package entity;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
 // Değerlendirme formu 1: Veteriner varlığını temsil eder.
+@Entity
+@Table(name = "vets")
 public class Vet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vet_id")
     private int id;
     private String name;
     private String phone;
     private String mail;
     private String address;
+
+    @OneToMany(mappedBy = "vet")
+    private List<Appointment> appointments;
 
     // Constructors
     public Vet() {}

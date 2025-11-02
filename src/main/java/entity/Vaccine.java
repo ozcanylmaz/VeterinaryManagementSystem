@@ -1,9 +1,16 @@
 package entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 // Değerlendirme formu 1: Aşı varlığını temsil eder.
+@Entity
+@Table(name = "vaccines")
 public class Vaccine {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vaccine_id")
     private int id;
     private String name;
     private String code; //
@@ -11,6 +18,8 @@ public class Vaccine {
     private LocalDate protectionEndDate;   // Koruma bitiş tarihi
 
     // Değerlendirme formu 13: İlişki: Hangi hayvana yapıldığı
+    @ManyToOne
+    @JoinColumn(name = "animal_id")
     private Animal animal;
 
     // Constructors

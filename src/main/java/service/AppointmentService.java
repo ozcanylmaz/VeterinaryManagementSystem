@@ -1,24 +1,31 @@
 package service;
 
 import dao.AppointmentDAO;
+import dao.AppointmentRepository;
+import entity.Animal;
 import entity.Appointment;
+import entity.Vet;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class AppointmentService {
 
-    private final AppointmentDAO appointmentDAO;
+
+    private final AppointmentRepository appointmentRepository;
     // Validsayon için AnimalDAO ve VetDAO'nun buraya eklenmesi ileri seviye bir geliştirme olacaktır.
 
-    public AppointmentService() {
-        this.appointmentDAO = new AppointmentDAO();
+    public AppointmentService(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+
     }
 
-    public boolean saveAppointment(Appointment appointment) {
+    public Appointment saveAppointment(Appointment appointment) {
 
         if (appointment.getAppointmentDate() == null || appointment.getAnimal() == null || appointment.getVet() == null) {
-            System.err.println("Validation Error: Appointment date, Animal ID, and Vet ID cannot be empty.");
-            return false;
+            throw new IllegalArgumentException("Validation Error: Appointment date, Animal ID, and Vet ID cannot be empty.");
         }
 
         // KRİTİK İŞ KURALI: Çakışma Kontrolü
@@ -27,22 +34,25 @@ public class AppointmentService {
 
         List<Appointment> existingAppointments;
         LocalDateTime end = null;
-        existingAppointments = appointmentDAO.findByVetAndDate(vetId, date, end);
+        Vet vet = new Vet();
+        vet.setId(appointment.getVet().getId());
+        existingAppointments = appointmentRepository.findAllByVetAndAppointmentDateBetween(vet, date, end);
 
         if (!existingAppointments.isEmpty()) {
-            System.err.println("Business Rule Violation: Vet " + vetId + " is already booked on " + date + ".");
-            return false;
+            throw new IllegalArgumentException("Business Rule Violation: Vet " + vetId + " is already booked on " + date + ".");
         }
 
-        return appointmentDAO.save(appointment);
+        return appointmentRepository.save(appointment);
     }
 
     public List<Appointment> getAllAppointments() {
-        return appointmentDAO.findAll();
+        return appointmentRepository.findAll();
     }
 
     public List<Appointment> getAppointmentsByDateRangeAndAnimal(int animalId, LocalDateTime start, LocalDateTime end) {
-        return appointmentDAO.findByVetAndDate(animalId, start, end);
+        Animal animal = new Animal();
+        animal.setId(animalId);
+        return appointmentRepository.findAllByAnimalAndAppointmentDateBetween(animal, start, end);
     }
 
     // Projeyi tamamlamak için find, update ve delete metotları da burada yer almalıdır.

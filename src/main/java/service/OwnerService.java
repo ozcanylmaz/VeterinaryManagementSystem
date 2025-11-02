@@ -1,68 +1,74 @@
 package service;
 
 import dao.OwnerDAO;
+import dao.OwnerRepository;
 import entity.Owner;
-import java.util.List;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
+@Service
 public class OwnerService {
 
-    private final OwnerDAO ownerDAO;
+    private final OwnerRepository ownerRepository;
 
-    public OwnerService() {
-        this.ownerDAO = new OwnerDAO();
+
+    public OwnerService(OwnerRepository ownerRepository) {
+        this.ownerRepository = ownerRepository;
+
     }
 
     // Değerlendirme formu 12: Kayıt eklemeden önce iş kuralı kontrolü yapılır.
-    public boolean saveOwner(Owner owner) {
+    public Owner saveOwner(Owner owner) {
         if (owner.getName() == null || owner.getName().trim().isEmpty()) {
-            System.err.println("Validation Error: Owner name cannot be empty.");
-            return false;
+            throw new IllegalArgumentException("Validation Error: Owner name cannot be empty.");
         }
         if (owner.getMail() != null && !owner.getMail().contains("@")) {
-            System.err.println("Validation Error: Invalid email format.");
-            return false;
+            throw new IllegalArgumentException("Validation Error: Invalid email format.");
         }
 
-        return ownerDAO.save(owner);
+        return ownerRepository.save(owner);
     }
 
     public Owner getOwner(int id) {
-        return ownerDAO.findById(id);
+        Optional<Owner> owner = ownerRepository.findById(id);
+        if (owner.isEmpty())
+            throw new IllegalArgumentException("Owner Not Found");
+
+        return owner.get();
     }
 
     public List<Owner> getAllOwners() {
-        return ownerDAO.findAll();
+        return ownerRepository.findAll();
     }
 
     // Owner ismine göre filtreleme
     public List<Owner> getOwnersByName(String name) {
-        return ownerDAO.findByName(name);
+        return ownerRepository.findByName(name);
     }
 
-    public boolean updateOwner(Owner owner) {
-        if (owner.getId() <= 0 || ownerDAO.findById(owner.getId()) == null) {
-            System.err.println("Update Error: Owner with ID " + owner.getId() + " not found.");
-            return false;
+    public Owner updateOwner(Owner owner) {
+        if (owner.getId() <= 0 || ownerRepository.findById(owner.getId()).isEmpty()) {
+
+            throw new IllegalArgumentException("Update Error: Owner with ID " + owner.getId() + " not found.");
         }
         if (owner.getName() == null || owner.getName().trim().isEmpty()) {
-            System.err.println("Validation Error: Owner name cannot be empty for update.");
-            return false;
+            throw new IllegalArgumentException("Validation Error: Owner name cannot be empty for update.");
         }
 
-        return ownerDAO.update(owner);
+        return ownerRepository.save(owner);
     }
 
-    public boolean deleteOwner(int id) {
+    public void deleteOwner(int id) {
         if (id <= 0) {
-            System.err.println("Delete Error: Invalid ID provided.");
-            return false;
+            throw new IllegalArgumentException("Delete Error: Invalid ID provided.");
+        }
+        Optional<Owner> owner = ownerRepository.findById(id);
+        if (owner.isEmpty()) {
+            throw new IllegalArgumentException("Delete Error: Owner with ID " + id + " not found.");
         }
 
-        if (ownerDAO.findById(id) == null) {
-            System.err.println("Delete Error: Owner with ID " + id + " not found.");
-            return false;
-        }
-
-        return ownerDAO.delete(id);
+        ownerRepository.delete(owner.get());
     }
 }

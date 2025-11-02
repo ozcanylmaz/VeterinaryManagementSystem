@@ -1,14 +1,35 @@
 package entity;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
 // Değerlendirme formu 1: Tüm sınıflar, metotlar ve değişkenler İngilizce isimlendirilmiştir.
+@Entity
+@Table(name = "animals")
 public class Animal {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "animal_id")
     private int id;
+
+
     private String name;
+
     private String species; // Tür (Örn: Dog, Cat)
+
     private String breed;   // Cins (Örn: Golden, Scottish Fold)
 
     // Değerlendirme formu 13: İlişki: Hayvanın sahibi (Owner Foreign Key'i temsil eder)
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
     private Owner owner;
+
+    @OneToMany(mappedBy = "animal")
+    private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "animal")
+    private List<Vaccine> vaccines;
 
     // Constructors
     public Animal() {
