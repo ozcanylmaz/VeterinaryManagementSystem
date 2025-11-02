@@ -1,0 +1,557 @@
+{
+	"info": {
+		"_postman_id": "33fbdf5c-a2b8-4d41-809a-94699f20ae0b",
+		"name": "Yılmaz-Veterinary-Managemen-System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49207112",
+		"_collection_link": "https://ozcan474-81658.postman.co/workspace/ozcan474's-Workspace~08ad8e43-64e1-4e86-8eaf-679ae6a0ac4b/collection/49207112-33fbdf5c-a2b8-4d41-809a-94699f20ae0b?action=share&source=collection_link&creator=49207112"
+	},
+	"item": [
+		{
+			"name": "animals",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"test\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\",\r\n\"owner\": {\r\n    \"id\": 1\r\n} \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/animals/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animals",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"test\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllByOwner",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"test\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/animals/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animals",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllByName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"test\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/animals?name=test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animals"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "owners",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"test\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/owners",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"test\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/owners/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"owners",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllByName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"test\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/owners?name=test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"owners"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":1,\r\n\"name\":\"yılmaz\",\r\n\"species\":\"test\",\r\n\"breed\":\"test\" \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/owners",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vets",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Yılmaz\",\r\n    \"phone\":\"dsfsdf\",\r\n    \"mail\":\"sdfsd\",\r\n    \"address\":\"sdfsdfsdf\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/vets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/vets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/vets/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vets",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "appointments",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"appointmentDate\":\"2025-11-20T12:00:00\",\r\n    \"animal\":{\r\n        \"id\":2\r\n    },\r\n    \"vet\":{\r\n        \"id\":1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/appointments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/appointments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllByDate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/appointments?animalId=2&minDate=2025-11-01T12:00:00&maxDate=2025-11-25T12:00:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointments"
+							],
+							"query": [
+								{
+									"key": "animalId",
+									"value": "2"
+								},
+								{
+									"key": "minDate",
+									"value": "2025-11-01T12:00:00"
+								},
+								{
+									"key": "maxDate",
+									"value": "2025-11-25T12:00:00"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vaccines",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Kuduz\",\r\n    \"code\":\"123124435erfdfg\",\r\n    \"protectionStartDate\":\"2025-11-02\",\r\n    \"protectionEndDate\":\"2026-11-02\",\r\n    \"animal\":{\r\n        \"id\":1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/vaccines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/vaccines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByAnimal",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/vaccines?animalId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vaccines"
+							],
+							"query": [
+								{
+									"key": "animalId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllByDate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/vaccines?minDate=2025-01-01&maxDate=2026-12-31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vaccines"
+							],
+							"query": [
+								{
+									"key": "minDate",
+									"value": "2025-01-01"
+								},
+								{
+									"key": "maxDate",
+									"value": "2026-12-31"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
